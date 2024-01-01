@@ -1,6 +1,6 @@
-import express, { urlencoded } from "express";
-import { everyThing, topHeadlines } from "./controllers/NewsController.js";
+import express from "express";
 import cors from "cors";
+import { everything, topHeadlines } from "./controllers/NewsController.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,22 +11,21 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*",
-    methods: "*",
+    origin: "https://news-block-website.vercel.app",
+    methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
     credentials: true,
     optionSuccessStatus: 200,
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 app.get("/", (req, res) => {
-  res.send("server is listening....");
+  res.send("Server is listening...");
 });
 
 app.post("/getTopHeadlines", topHeadlines);
 
-app.post("/getEveryThing", everyThing);
+app.post("/getEverything", everything);
 
 app.listen(port, () => {
-  console.log(`listening at port ${port}...`);
+  console.log(`Listening at port ${port}...`);
 });
