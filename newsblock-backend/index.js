@@ -9,7 +9,14 @@ const port = 8000;
 
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://news-block-website.vercel.app",
+    methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
+    credentials: true,
+    optionSuccessStatus: 200,
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("server is listening....");
