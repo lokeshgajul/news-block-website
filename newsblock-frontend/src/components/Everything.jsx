@@ -12,13 +12,16 @@ function Everything() {
 
   const fetchEverything = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/getEveryThing`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ search, sortBy }),
-      });
+      const response = await fetch(
+        `https://news-block-website-backend.vercel.app/getEveryThing`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ search, sortBy }),
+        }
+      );
       const data = await response.json();
       if (data.everything) {
         setEverything(data.everything);

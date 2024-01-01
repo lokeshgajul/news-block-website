@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import Slider from "react-slick";
@@ -95,13 +96,16 @@ function TopHeadlines() {
 
   const getHeadlines = async () => {
     try {
-      const response = await fetch("http://localhost:8000/getTopHeadlines", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ category }),
-      });
+      const response = await fetch(
+        "https://news-block-website-backend.vercel.app/getTopHeadlines",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ category }),
+        }
+      );
 
       const data = await response.json();
 
