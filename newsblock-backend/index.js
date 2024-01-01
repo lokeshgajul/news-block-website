@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://news-block-website.vercel.app",
+    origin: "http://localhost:5173",
     methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
     credentials: true,
     optionSuccessStatus: 200,
