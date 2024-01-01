@@ -11,10 +11,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://news-block-website.vercel.app",
-    methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
+    origin: "*",
+    methods: "*",
     credentials: true,
     optionSuccessStatus: 200,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
