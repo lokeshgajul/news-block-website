@@ -97,7 +97,7 @@ function TopHeadlines() {
   const getHeadlines = async () => {
     try {
       const response = await fetch(
-        "https://news-block-website-backend.vercel.app/getTopHeadlines",
+        "https://news-block-website-backend.vercel.app//getTopHeadlines",
         {
           method: "POST",
           headers: {
