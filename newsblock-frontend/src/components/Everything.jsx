@@ -12,16 +12,13 @@ function Everything({ loading, setLoading }) {
 
   const fetchEverything = async () => {
     try {
-      const response = await fetch(
-        `https://news-block-website-backend.vercel.app/getEveryThing`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ search, sortBy }),
-        }
-      );
+      const response = await fetch(`http://localhost:8000/getEveryThing`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ search, sortBy }),
+      });
       const data = await response.json();
       if (data.everything) {
         setEverything(data.everything);
@@ -33,7 +30,6 @@ function Everything({ loading, setLoading }) {
   };
 
   const changeSearch = (searchTerm) => {
-    console.log(searchTerm);
     setSearch(searchTerm);
   };
 
@@ -43,8 +39,6 @@ function Everything({ loading, setLoading }) {
   };
 
   const handleSort = (sort) => {
-    // e.preventDefault();
-    console.log(sort);
     setSortBy(sort);
   };
 
@@ -57,7 +51,7 @@ function Everything({ loading, setLoading }) {
       <div className="md:flex justify-center md:justify-between items-center flex-col md:flex-row">
         <span className="inline-flex items-center mt-3 cursor-pointer hover:text-blue-400">
           <h1 className="text-2xl font-serif text-center font-semibold px-2.5 py-2">
-            Everything
+            Global Coverage
           </h1>
         </span>
         <div className="flex md:justify-end md:items-end pt-2 md:pt-0 px-4">
@@ -69,7 +63,7 @@ function Everything({ loading, setLoading }) {
         </div>
       </div>
 
-      <div className="px-4">
+      <div className="px-4 md:pt-0">
         <SortBy sort={sortBy} onHandleSort={handleSort} />
       </div>
 

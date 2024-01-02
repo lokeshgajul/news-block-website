@@ -1,9 +1,9 @@
-import { ColorRing } from "react-loader-spinner";
+import { RotatingLines } from "react-loader-spinner";
 
 const Loader = () => {
   return (
     <div className="loader-container flex justify-center items-center p-7">
-      <ColorRing
+      <RotatingLines
         visible={true}
         height="80"
         width="80"

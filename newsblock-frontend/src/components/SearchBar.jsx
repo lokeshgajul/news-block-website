@@ -1,14 +1,20 @@
-// SearchBar component
+/* eslint-disable react/prop-types */
 import { LuSearch } from "react-icons/lu";
+import NewsHook from "../Context/NewsContext";
 
 function SearchBar({ changeSearch, onSubmit }) {
+  const { theme } = NewsHook();
   const onChangeSearch = (search) => {
     changeSearch(search);
   };
-
   return (
     <div>
-      <form className="flex items-center" onSubmit={onSubmit}>
+      <form
+        className={`flex items-center ${
+          theme === "dark" ? "text-black" : "text-black"
+        } `}
+        onSubmit={onSubmit}
+      >
         <label htmlFor="voice-search" className="sr-only">
           Search
         </label>

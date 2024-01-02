@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
+
 function SortBy({ sort, onHandleSort }) {
   const handleChange = (selectedSort) => {
     onHandleSort(selectedSort);
   };
+
   return (
     <div className="pt-3">
       <Dropdown onSelect={handleChange}>

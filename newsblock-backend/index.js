@@ -9,9 +9,12 @@ const port = 8000;
 
 app.use(express.json());
 
+// Handle Preflight OPTIONS request for getTopHeadlines route
+app.options("/getTopHeadlines", cors());
+
 app.use(
   cors({
-    origin: "https://news-block-website.vercel.app",
+    origin: "http://localhost:5173",
     methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
     credentials: true,
     optionSuccessStatus: 200,

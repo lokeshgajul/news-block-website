@@ -1,7 +1,9 @@
 import { useState } from "react";
+import NewsHook from "../Context/NewsContext";
 
 function ScrollBar({ onCategoryChange }) {
   const [activeCategory, setActiveCategory] = useState(null);
+  const { theme } = NewsHook();
 
   const categories = [
     "Business",
@@ -21,11 +23,13 @@ function ScrollBar({ onCategoryChange }) {
 
   return (
     <div>
-      <ul className="flex overflow-x-auto pt-2">
+      <ul className={`flex overflow-x-auto pt-2 `}>
         {categories.map((category, index) => (
           <li
             key={index}
-            className={`mx-3 text-xl cursor-pointer ${
+            className={` ml-3 text-xl cursor-pointer p-2  ${
+              theme === "dark" ? "text-white" : "text-gray-700"
+            } ${
               activeCategory === category
                 ? "font-medium text-gray-700"
                 : "text-gray-500"

@@ -1,9 +1,16 @@
 /* eslint-disable react/prop-types */
 
+import NewsHook from "../Context/NewsContext";
+
 function News({ item }) {
+  const { theme } = NewsHook();
   return (
-    <div className="flex justify-center items-center mt-3">
-      <div className=" overflow-hidden rounded shadow-md  m-2 cursor-pointer bg-gray-200">
+    <div className="flex justify-center items-center m-3">
+      <div
+        className={`overflow-hidden rounded shadow-md cursor-pointer  ${
+          theme === "dark" ? "bg-gray-800" : "bg-gray-200"
+        }`}
+      >
         <img
           className="rounded w-full h-40 object-cover"
           src={

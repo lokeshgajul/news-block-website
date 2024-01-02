@@ -7,11 +7,16 @@ import News from "./News";
 import Everything from "./Everything";
 import ScrollBar from "./ScrollBar";
 import Loader from "./Loader";
+import NewsHook from "../Context/NewsContext";
+import "@theme-toggles/react/css/Around.css";
+import { Around } from "@theme-toggles/react";
 
 function TopHeadlines() {
   const [Headlines, setHeadlines] = useState([]);
   const [category, setCategory] = useState("business");
   const [loading, setLoading] = useState(true);
+
+  const { theme, toggleTheme } = NewsHook();
 
   const settings = {
     infinite: true,
@@ -19,11 +24,12 @@ function TopHeadlines() {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
+    arrows: false,
     autoplaySpeed: 2000,
     pauseOnHover: true,
     responsive: [
       {
-        breakpoint: 1200, // Adjust the breakpoint as needed
+        breakpoint: 1200,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 1,
@@ -32,7 +38,7 @@ function TopHeadlines() {
         },
       },
       {
-        breakpoint: 992, // Adjust the breakpoint as needed
+        breakpoint: 992,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
@@ -41,7 +47,7 @@ function TopHeadlines() {
         },
       },
       {
-        breakpoint: 768, // Adjust the breakpoint as needed
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -60,16 +66,13 @@ function TopHeadlines() {
 
   const getHeadlines = async () => {
     try {
-      const response = await fetch(
-        "https://news-block-website-backend.vercel.app/getTopHeadlines",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ category }),
-        }
-      );
+      const response = await fetch("http://localhost:8000/getTopHeadlines", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ category }),
+      });
 
       const data = await response.json();
 
@@ -94,11 +97,19 @@ function TopHeadlines() {
   };
 
   return (
-    <div className="mt-4 mx-2 md:p-4">
-      <div className="inline-flex items-center cursor-pointer hover:text-blue-400">
-        <h1 className="text-2xl font-serif font-semibold px-2.5 py-2">
+    <div className={`mt-4  ${theme === "dark" ? "text-white" : "text-black"}`}>
+      <div className=" flex justify-between items-center ">
+        <h1 className="text-2xl font-serif font-semibold px-3 py-2 cursor-pointer">
           Top Headlines
         </h1>
+        <h2
+          onClick={() => toggleTheme()}
+          className={`text-4xl px-3 ${
+            theme === "dark" ? "text-white" : "text-black"
+          }`}
+        >
+          <Around duration={750} />
+        </h2>
       </div>
 
       <div>
