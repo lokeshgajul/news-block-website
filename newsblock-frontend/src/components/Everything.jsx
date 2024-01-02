@@ -1,11 +1,11 @@
-// Everything component
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
 import SearchBar from "./SearchBar";
 import EverythingNewsCard from "./EverythingNewsCard";
 import SortBy from "./SortBy";
+import Loader from "./Loader";
 
-function Everything() {
+function Everything({ loading, setLoading }) {
   const [everything, setEverything] = useState([]);
   const [search, setSearch] = useState("tesla");
   const [sortBy, setSortBy] = useState("popularity");
@@ -25,6 +25,7 @@ function Everything() {
       const data = await response.json();
       if (data.everything) {
         setEverything(data.everything);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -52,15 +53,14 @@ function Everything() {
   }, [search, sortBy]);
 
   return (
-    <div className="p-3 mt-14 md:p-4">
-      <div className="md:flex justify-center md:justify-between items-center  flex-col md:flex-row">
+    <div className="mt-2 md:p-4">
+      <div className="md:flex justify-center md:justify-between items-center flex-col md:flex-row">
         <span className="inline-flex items-center mt-3 cursor-pointer hover:text-blue-400">
-          <h1 className="text-2xl text-center font-semibold pr-2">
+          <h1 className="text-2xl font-serif text-center font-semibold px-2.5 py-2">
             Everything
           </h1>
-          <FaArrowRight size={30} />
         </span>
-        <div className="flex  md:justify-end md:items-end pt-3">
+        <div className="flex md:justify-end md:items-end pt-2 md:pt-0 px-4">
           <SearchBar
             changeSearch={changeSearch}
             search={search}
@@ -69,18 +69,28 @@ function Everything() {
         </div>
       </div>
 
-      <div>
+      <div className="px-4">
         <SortBy sort={sortBy} onHandleSort={handleSort} />
       </div>
-      <div className="grid gap-4 max-w-full mx-auto mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {everything.map((item, index) => (
-          <div
-            key={index}
-            className="flex justify-center items-center max-w-[20rem] m-2 mx-auto"
-          >
-            <EverythingNewsCard item={item} />
-          </div>
-        ))}
+
+      <div className="max-w-full mx-auto mt-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {loading ? (
+            <div className="flex items-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 justify-center h-full">
+              <Loader />
+            </div>
+          ) : everything.length === 0 ? (
+            <h2 className="col-span-full text-2xl text-center">
+              News Not Available
+            </h2>
+          ) : (
+            everything.map((item, index) => (
+              <div key={index} className="flex justify-center items-center m-2">
+                <EverythingNewsCard item={item} />
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

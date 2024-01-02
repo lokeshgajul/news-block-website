@@ -27,7 +27,7 @@ function SearchBar({ changeSearch, onSubmit }) {
             required
           />
         </div>
-        <button className="items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">
+        <button className="ml-2 items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">
           Search
         </button>
       </form>

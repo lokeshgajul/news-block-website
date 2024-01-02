@@ -4,13 +4,13 @@ function ScrollBar({ onCategoryChange }) {
   const [activeCategory, setActiveCategory] = useState(null);
 
   const categories = [
-    "business",
-    "entertainment",
-    "general",
-    "health",
-    "science",
-    "sports",
-    "technology",
+    "Business",
+    "Entertainment",
+    "General",
+    "Health",
+    "Science",
+    "Sports",
+    "Technology",
   ];
 
   const handleCategoryChange = (category) => {
@@ -26,7 +26,9 @@ function ScrollBar({ onCategoryChange }) {
           <li
             key={index}
             className={`mx-3 text-xl cursor-pointer ${
-              activeCategory === category ? "text-gray-700" : "text-gray-500"
+              activeCategory === category
+                ? "font-medium text-gray-700"
+                : "text-gray-500"
             } `}
             onClick={() => {
               handleCategoryChange(category);

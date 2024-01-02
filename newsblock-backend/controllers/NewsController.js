@@ -2,14 +2,13 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
-const api_key = process.env.API_KEY;
-console.log(api_key);
+const apiKey = process.env.API_KEY;
 
 export const topHeadlines = async (req, res) => {
   try {
     const { category } = req.body;
     const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${api_key}`
+      `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${apiKey}`
     );
 
     const data = response.data;
@@ -18,20 +17,18 @@ export const topHeadlines = async (req, res) => {
       console.log(data.articles);
       res.send({ news: data.articles });
     } else {
-      res.send("error occurred...");
+      res.send("Error occurred...");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
 
-export const everyThing = async (req, res) => {
+export const everything = async (req, res) => {
   try {
-    const { search } = req.body;
-    const { sortBy } = req.body;
+    const { search, sortBy } = req.body;
 
-    // Validate that search parameter is present
     if (!search) {
       return res
         .status(400)
@@ -39,7 +36,7 @@ export const everyThing = async (req, res) => {
     }
 
     const response = await axios.get(
-      `https://newsapi.org/v2/everything?q=${search}&language=en&sortBy=${sortBy}&apiKey=${api_key}`
+      `https://newsapi.org/v2/everything?q=${search}&language=en&sortBy=${sortBy}&apiKey=${apiKey}`
     );
 
     const data = response.data;
