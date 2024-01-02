@@ -27,7 +27,8 @@ export const topHeadlines = async (req, res) => {
 
 export const everything = async (req, res) => {
   try {
-    const { search, sortBy } = req.body;
+    const { search } = req.body;
+    const { sortBy } = req.body;
 
     if (!search) {
       return res
@@ -44,13 +45,11 @@ export const everything = async (req, res) => {
     if (data.articles) {
       res.json({ everything: data.articles });
     } else {
-      // Provide an informative error response
       res.status(500).json({ error: "Error occurred while fetching news" });
     }
   } catch (error) {
     console.error(error);
 
-    // Provide an informative error response
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

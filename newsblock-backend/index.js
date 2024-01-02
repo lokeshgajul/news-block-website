@@ -23,7 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/getTopHeadlines", topHeadlines);
-app.post("/getEverything", everything);
+
+app.post("/getEveryThing", everything);
 
 app.listen(port, () => {
   console.log(`Listening at port ${port}...`);
