@@ -50,7 +50,7 @@ function Everything({ loading, setLoading }) {
     <div className="mt-2 md:p-4">
       <div className="md:flex justify-center md:justify-between items-center flex-col md:flex-row">
         <span className="inline-flex items-center mt-3 cursor-pointer hover:text-blue-400">
-          <h1 className="text-2xl font-serif text-center font-semibold px-2.5 py-2">
+          <h1 className="text-2xl font-serif text-center font-semibold px-3 py-2">
             Global Coverage
           </h1>
         </span>
@@ -79,7 +79,7 @@ function Everything({ loading, setLoading }) {
             </h2>
           ) : (
             everything.map((item, index) => (
-              <div key={index} className="flex justify-center items-center m-2">
+              <div key={index} className="flex justify-center items-center ">
                 <EverythingNewsCard item={item} />
               </div>
             ))
