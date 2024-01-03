@@ -12,7 +12,7 @@ function Everything({ loading, setLoading }) {
 
   const fetchEverything = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/getEveryThing`, {
+      const response = await fetch(`https://news-block-website-backend.vercel.app/getEveryThing`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
