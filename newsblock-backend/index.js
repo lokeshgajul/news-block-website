@@ -14,7 +14,7 @@ app.options("/getTopHeadlines", cors());
 
 app.use(
   cors({
-    origin: "https://news-block-website-backend.vercel.app",
+    origin: "https://news-block-website.vercel.app",
     methods: ["POST", "GET", "DELETE", "PUT", "HEAD", "PATCH"],
     credentials: true,
     optionSuccessStatus: 200,
