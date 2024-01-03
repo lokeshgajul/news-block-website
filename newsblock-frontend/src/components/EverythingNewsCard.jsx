@@ -4,7 +4,7 @@ import NewsHook from "../Context/NewsContext";
 function EverythingNewsCard({ item }) {
   const { theme } = NewsHook();
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center m-3">
       <div
         className={`overflow-hidden rounded shadow-md cursor-pointer  ${
           theme === "dark" ? "bg-gray-800" : "bg-gray-200"

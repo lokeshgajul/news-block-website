@@ -27,11 +27,13 @@ function ScrollBar({ onCategoryChange }) {
         {categories.map((category, index) => (
           <li
             key={index}
-            className={` ml-3 text-xl cursor-pointer p-2  ${
+            className={`ml-3 text-xl cursor-pointer p-2 ${
               theme === "dark" ? "text-white" : "text-gray-700"
             } ${
               activeCategory === category
-                ? "font-medium text-gray-700"
+                ? `font-bold ${
+                    theme === "dark" ? "text-[#dfdfdf]" : "text-gray-700"
+                  }`
                 : "text-gray-500"
             } `}
             onClick={() => {
