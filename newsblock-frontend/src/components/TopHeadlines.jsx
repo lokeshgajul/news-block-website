@@ -1,5 +1,4 @@
-// TopHeadlines.js
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,13 +9,14 @@ import Loader from "./Loader";
 import NewsHook from "../Context/NewsContext";
 import "@theme-toggles/react/css/Around.css";
 import { Around } from "@theme-toggles/react";
+import Footer from "./Footer";
 
 function TopHeadlines() {
   const [Headlines, setHeadlines] = useState([]);
   const [category, setCategory] = useState("business");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(undefined);
 
   const { theme, toggleTheme } = NewsHook();
 
@@ -68,19 +68,21 @@ function TopHeadlines() {
 
   const getHeadlines = async () => {
     try {
-      const response = await fetch("http://localhost:8000/getTopHeadlines", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ category, page: currentPage }), // Include the current page
-      });
+      const response = await fetch(
+        "https://news-block-website-backend.vercel.app/getTopHeadlines",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ category }), // Include the current page
+        }
+      );
 
       const data = await response.json();
 
       if (Array.isArray(data.news)) {
         setHeadlines(data.news);
-        setTotalPages(data.totalPages); // Set the total number of pages
         setLoading(false);
       } else {
         console.log("News are not fetching.");
@@ -97,10 +99,6 @@ function TopHeadlines() {
   const handleCategoryChange = (category) => {
     setCategory(category);
     setCurrentPage(1); // Reset current page when category changes
-  };
-
-  const handleNextCLick = () => {
-    setCurrentPage(currentPage + 1);
   };
 
   const handlePageChange = (page) => {
@@ -147,14 +145,63 @@ function TopHeadlines() {
           setLoading={setLoading}
           currentPage={currentPage}
           totalPages={totalPages}
+          setTotalPages={setTotalPages}
           onPageChange={handlePageChange}
         />
       </div>
+      {/* 
+      <div className="pt-2 mx-3 flex justify-between max-md:justify-evenly items-center">
+        {currentPage <= 1 ? (
+          <div className="flex cursor-pointer text-xl rounded-md opacity-50 p-2">
+            <span className="relative pr-2 top-0.5">
+              <GrLinkPrevious size={23} />
+            </span>
+            <button className="max-md:hidden">Previous</button>
+          </div>
+        ) : (
+          <div
+            onClick={handlePreviousCLick}
+            className={`flex cursor-pointer mt-2 text-xl rounded-md ${
+              theme === "dark"
+                ? "bg-gray-600  hover:bg-gray-700"
+                : "bg-gray-300 hover:bg-gray-400"
+            } p-2`}
+          >
+            <span className="relative pr-2 top-0.5">
+              <GrLinkPrevious size={23} />
+            </span>
+            <button className="max-md:hidden">Previous</button>
+          </div>
+        )}
 
-      <div className="mx-3 py-3 flex justify-end">
-        <button className="bg-blue-300 p-2" onClick={handleNextCLick}>
-          Next{" "}
-        </button>
+        {currentPage < totalPages ? (
+          <div
+            onClick={handleNextCLick}
+            className={`flex cursor-pointer mt-2 text-xl rounded-md ${
+              theme === "dark"
+                ? "bg-gray-600  hover:bg-gray-700"
+                : "bg-gray-300 hover:bg-gray-400"
+            } p-2`}
+          >
+            <button className="max-md:hidden">Next</button>
+            <span className="relative pl-2 top-0.5">
+              <GrLinkNext size={23} />
+            </span>
+          </div>
+        ) : (
+          <div className="flex cursor-not-allowed text-xl rounded-md opacity-50 p-2">
+            <button className="max-md:hidden" disabled>
+              Next (No Pages)
+            </button>
+            <span className="relative pl-2 top-0.5">
+              <GrLinkNext size={23} />
+            </span>
+          </div>
+        )}
+      </div> */}
+
+      <div>
+        <Footer />
       </div>
     </div>
   );

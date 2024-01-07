@@ -1,38 +1,50 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import EverythingNewsCard from "./EverythingNewsCard";
 import SortBy from "./SortBy";
 import Loader from "./Loader";
+import NewsHook from "../Context/NewsContext";
+import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 
 function Everything({
   loading,
   setLoading,
   currentPage,
   totalPages,
+  setTotalPages,
   onPageChange,
 }) {
   const [everything, setEverything] = useState([]);
   const [search, setSearch] = useState("tesla");
   const [sortBy, setSortBy] = useState("popularity");
+  const { theme } = NewsHook();
+  const pageSize = 20;
 
   const fetchEverything = async () => {
     try {
-      const response = await fetch("http://localhost:8000/getEveryThing", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          search: search,
-          sortBy: sortBy,
-          page: currentPage,
-        }),
-      });
+      const response = await fetch(
+        "https://news-block-website-backend.vercel.app/getEverything",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            search: search,
+            sortBy: sortBy,
+            page: currentPage,
+          }),
+        }
+      );
 
       const data = await response.json();
 
-      if (Array.isArray(data.everything)) {
-        setEverything(data.everything);
+      if (Array.isArray(data.everything.articles)) {
+        setEverything(data.everything.articles);
+
+        const totalResultsFromApi = data.everything.totalResults;
+        setTotalPages(Math.ceil(totalResultsFromApi / pageSize));
         setLoading(false);
       } else {
         console.log("News are not fetching.");
@@ -44,15 +56,24 @@ function Everything({
 
   const changeSearch = (searchTerm) => {
     setSearch(searchTerm);
+    onPageChange(1);
   };
-
-  // const handleSearchSubmit = () => {
-  //   onPageChange(1);
-  // };
 
   const handleSort = (sort) => {
     setSortBy(sort);
     onPageChange(1);
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
   };
 
   useEffect(() => {
@@ -92,29 +113,61 @@ function Everything({
             </h2>
           ) : (
             everything.map((item, index) => (
-              <div key={index} className="flex justify-center items-center ">
+              <div key={index} className="flex justify-center items-center">
                 <EverythingNewsCard item={item} />
               </div>
             ))
           )}
         </div>
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                className={`mx-2 px-4 py-2 ${
-                  currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
-                }`}
-                onClick={() => onPageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        )}
+      </div>
+
+      <div className="flex justify-center mt-4">
+        <div
+          className={`flex cursor-pointer mx-2 px-4 py-2 text-xl rounded-md ${
+            theme === "dark"
+              ? "text-gray-600  hover:text-gray-700"
+              : "text-gray-700 hover:text-gray-800"
+          } p-2`}
+        >
+          {currentPage > 1 && (
+            <span
+              onClick={handlePreviousClick}
+              className={`relative pr-2 top-0.5 ${
+                currentPage === 1 ? "opacity-50" : ""
+              }`}
+            >
+              <GrLinkPrevious size={23} />
+            </span>
+          )}
+          <button
+            className={`max-md:hidden ${currentPage === 1 ? "opacity-50" : ""}`}
+            onClick={handlePreviousClick}
+          >
+            Previous
+          </button>
+        </div>
+        <div
+          className={`flex cursor-pointer mx-2 px-4 py-2 text-xl rounded-md ${
+            theme === "dark"
+              ? "text-gray-600  hover:text-gray-700"
+              : "text-gray-800 hover:text-gray-900"
+          } p-2`}
+        >
+          <button
+            className={`max-md:hidden ${
+              currentPage === totalPages ? "opacity-50" : ""
+            }`}
+            onClick={handleNextClick}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+          {currentPage < totalPages && (
+            <span onClick={handleNextClick} className="relative pl-2 top-1">
+              <GrLinkNext size={23} />
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

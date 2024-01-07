@@ -36,8 +36,7 @@ export const everything = async (req, res) => {
         .json({ error: "Search query is missing in the request parameters" });
     }
 
-    // Define the number of articles per page
-    const pageSize = 8;
+    const pageSize = 20;
 
     const response = await axios.get(
       `https://newsapi.org/v2/everything?q=${search}&language=en&sortBy=${sortBy}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
@@ -46,7 +45,7 @@ export const everything = async (req, res) => {
     const data = response.data;
 
     if (data.articles) {
-      res.json({ everything: data.articles });
+      res.json({ everything: data });
     } else {
       res.status(500).json({ error: "Error occurred while fetching news" });
     }
