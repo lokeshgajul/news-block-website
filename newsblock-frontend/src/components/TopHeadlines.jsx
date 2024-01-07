@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+// TopHeadlines.js
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,6 +15,8 @@ function TopHeadlines() {
   const [Headlines, setHeadlines] = useState([]);
   const [category, setCategory] = useState("business");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const { theme, toggleTheme } = NewsHook();
 
@@ -71,14 +73,14 @@ function TopHeadlines() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ category }),
+        body: JSON.stringify({ category, page: currentPage }), // Include the current page
       });
 
       const data = await response.json();
 
       if (Array.isArray(data.news)) {
-        console.log(data.news);
         setHeadlines(data.news);
+        setTotalPages(data.totalPages); // Set the total number of pages
         setLoading(false);
       } else {
         console.log("News are not fetching.");
@@ -90,10 +92,19 @@ function TopHeadlines() {
 
   useEffect(() => {
     getHeadlines();
-  }, [category]);
+  }, [category, currentPage]);
 
   const handleCategoryChange = (category) => {
     setCategory(category);
+    setCurrentPage(1); // Reset current page when category changes
+  };
+
+  const handleNextCLick = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -131,7 +142,19 @@ function TopHeadlines() {
       )}
 
       <div>
-        <Everything loading={loading} setLoading={setLoading} />
+        <Everything
+          loading={loading}
+          setLoading={setLoading}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
+
+      <div className="mx-3 py-3 flex justify-end">
+        <button className="bg-blue-300 p-2" onClick={handleNextCLick}>
+          Next{" "}
+        </button>
       </div>
     </div>
   );

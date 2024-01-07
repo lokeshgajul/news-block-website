@@ -1,31 +1,44 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import EverythingNewsCard from "./EverythingNewsCard";
 import SortBy from "./SortBy";
 import Loader from "./Loader";
 
-function Everything({ loading, setLoading }) {
+function Everything({
+  loading,
+  setLoading,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) {
   const [everything, setEverything] = useState([]);
   const [search, setSearch] = useState("tesla");
   const [sortBy, setSortBy] = useState("popularity");
 
   const fetchEverything = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/getEveryThing`, {
+      const response = await fetch("http://localhost:8000/getEveryThing", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ search, sortBy }),
+        body: JSON.stringify({
+          search: search,
+          sortBy: sortBy,
+          page: currentPage,
+        }),
       });
+
       const data = await response.json();
-      if (data.everything) {
+
+      if (Array.isArray(data.everything)) {
         setEverything(data.everything);
         setLoading(false);
+      } else {
+        console.log("News are not fetching.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching news:", error);
     }
   };
 
@@ -33,18 +46,18 @@ function Everything({ loading, setLoading }) {
     setSearch(searchTerm);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    fetchEverything();
-  };
+  // const handleSearchSubmit = () => {
+  //   onPageChange(1);
+  // };
 
   const handleSort = (sort) => {
     setSortBy(sort);
+    onPageChange(1);
   };
 
   useEffect(() => {
     fetchEverything();
-  }, [search, sortBy]);
+  }, [search, sortBy, currentPage]);
 
   return (
     <div className="mt-2 md:p-4">
@@ -56,9 +69,9 @@ function Everything({ loading, setLoading }) {
         </span>
         <div className="flex md:justify-end md:items-end pt-2 md:pt-0 px-4">
           <SearchBar
-            changeSearch={changeSearch}
             search={search}
-            onSubmit={handleSearchSubmit}
+            onChangeSearch={changeSearch}
+            onSubmit={changeSearch}
           />
         </div>
       </div>
@@ -85,6 +98,23 @@ function Everything({ loading, setLoading }) {
             ))
           )}
         </div>
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={`mx-2 px-4 py-2 ${
+                  currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+                onClick={() => onPageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

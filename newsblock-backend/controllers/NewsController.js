@@ -27,17 +27,20 @@ export const topHeadlines = async (req, res) => {
 
 export const everything = async (req, res) => {
   try {
-    const { search } = req.body;
+    const { search, page = 1 } = req.body;
     const { sortBy } = req.body;
 
     if (!search) {
       return res
         .status(400)
-        .json({ error: "Search query is missing in the request body" });
+        .json({ error: "Search query is missing in the request parameters" });
     }
 
+    // Define the number of articles per page
+    const pageSize = 8;
+
     const response = await axios.get(
-      `https://newsapi.org/v2/everything?q=${search}&language=en&sortBy=${sortBy}&apiKey=${apiKey}`
+      `https://newsapi.org/v2/everything?q=${search}&language=en&sortBy=${sortBy}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
     );
 
     const data = response.data;
@@ -49,7 +52,6 @@ export const everything = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
